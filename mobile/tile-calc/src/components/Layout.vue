@@ -11,11 +11,11 @@
         <div id="container">
             <ion-grid>
                 <ion-row>
-                    <ion-col size="12" size-md="4"></ion-col>
+                    <ion-col size="12" size-md="2"></ion-col>
                     <ion-col size="12" size-md="8">
                         <slot></slot>
                     </ion-col>
-                    <ion-col size="12" size-md="4"></ion-col>
+                    <ion-col size="12" size-md="2"></ion-col>
                 </ion-row>
             </ion-grid>
         </div>
@@ -31,14 +31,6 @@ defineProps<{
 </script>
 
 <style scoped>
-#container {
-    text-align: center;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-}
 
 #container strong {
     font-size: 20px;
@@ -55,4 +47,5 @@ defineProps<{
 #container a {
     text-decoration: none;
 }
+
 </style>
