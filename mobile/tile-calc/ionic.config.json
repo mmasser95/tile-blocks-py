@@ -1,0 +1,7 @@
+{
+  "name": "Tile Calc",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
