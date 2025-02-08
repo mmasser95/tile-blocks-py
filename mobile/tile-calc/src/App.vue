@@ -49,7 +49,9 @@ import {
 import { ref } from 'vue';
 import {
   squareSharp,
-  squareOutline
+  squareOutline,
+  albumsOutline,
+  albumsSharp
 } from 'ionicons/icons';
 
 const selectedIndex = ref(0);
@@ -60,7 +62,12 @@ const appPages = [
     iosIcon: squareOutline,
     mdIcon: squareSharp,
   },
-
+  {
+    title: 'Intercalat',
+    url: '/intercalat',
+    iosIcon: albumsOutline,
+    mdIcon: albumsSharp,
+  },
 ];
 const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 

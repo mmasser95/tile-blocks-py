@@ -8,11 +8,15 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/folder/:id',
-    component: () => import ('../views/FolderPage.vue')
+    component: () => import('../views/FolderPage.vue')
   },
   {
     path: '/cuadricula',
-    component: ()=> import ('../views/Cuadricula.vue')
+    component: () => import('../views/Cuadricula.vue')
+  },
+  {
+    path: '/intercalat',
+    component: () => import('../views/Intercalat.vue')
   }
 ]
 
