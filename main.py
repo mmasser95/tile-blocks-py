@@ -87,7 +87,6 @@ def plot_tiles2(area_width, area_height, tile_width, tile_height, joint=0):
             width = tile_width if x + tile_width <= area_width else spare_x - joint
             height = tile_height if y + tile_height <= area_height else spare_y - joint
 
-            # Asegurar que las baldosas incompletas no sean negativas
             width = max(width, 0)
             height = max(height, 0)
 
@@ -95,23 +94,24 @@ def plot_tiles2(area_width, area_height, tile_width, tile_height, joint=0):
             rect = patches.Rectangle((x, y), width, height, linewidth=1, edgecolor='black', facecolor=color)
             ax.add_patch(rect)
 
-
-            # Etiquetar baldosas incompletas
             if color == "red":
                 ax.text(x + width / 2, y + height / 2, f"{width} x {height}", 
                         color="black", fontsize=8, ha='center', va='center', bbox=dict(facecolor='white', alpha=0.7))
 
-    # **Agregar etiquetas de dimensiones**
-    ax.annotate(f"{area_width} cm", (area_width / 2, -tile_height * 0.5), 
-                ha="center", va="center", fontsize=10, color="black",
+    # **Ajustar límites para dejar espacio a las etiquetas**
+    ax.set_xlim(-tile_width * 1.5, area_width + tile_width * 1.5)
+    ax.set_ylim(-tile_height * 1.5, area_height + tile_height * 1.5)
+
+    # **Etiquetas de dimensiones**
+    ax.annotate(f"{area_width} cm", (area_width / 2, -tile_height), 
+                ha="center", va="center", fontsize=12, color="black",
                 arrowprops=dict(facecolor='black', arrowstyle="<->"))
 
-    ax.annotate(f"{area_height} cm", (-tile_width * 0.7, area_height / 2), 
-                ha="center", va="center", fontsize=10, color="black", rotation=90,
+    ax.annotate(f"{area_height} cm", (-tile_width, area_height / 2), 
+                ha="center", va="center", fontsize=12, color="black", rotation=90,
                 arrowprops=dict(facecolor='black', arrowstyle="<->"))
-    # Configuración del gráfico
-    ax.set_xlim(0, area_width)
-    ax.set_ylim(0, area_height)
+
+    # Configuración de la cuadrícula
     ax.set_xticks([i * (tile_width + joint) for i in range(tiles_x + 1)])
     ax.set_yticks([j * (tile_height + joint) for j in range(tiles_y + 1)])
     ax.set_xticklabels([])
