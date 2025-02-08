@@ -95,11 +95,20 @@ def plot_tiles2(area_width, area_height, tile_width, tile_height, joint=0):
             rect = patches.Rectangle((x, y), width, height, linewidth=1, edgecolor='black', facecolor=color)
             ax.add_patch(rect)
 
+
             # Etiquetar baldosas incompletas
             if color == "red":
-                ax.text(x + width / 2, y + height / 2, f"{width:.2f} x {height:.2f}", 
+                ax.text(x + width / 2, y + height / 2, f"{width} x {height}", 
                         color="black", fontsize=8, ha='center', va='center', bbox=dict(facecolor='white', alpha=0.7))
 
+    # **Agregar etiquetas de dimensiones**
+    ax.annotate(f"{area_width} cm", (area_width / 2, -tile_height * 0.5), 
+                ha="center", va="center", fontsize=10, color="black",
+                arrowprops=dict(facecolor='black', arrowstyle="<->"))
+
+    ax.annotate(f"{area_height} cm", (-tile_width * 0.7, area_height / 2), 
+                ha="center", va="center", fontsize=10, color="black", rotation=90,
+                arrowprops=dict(facecolor='black', arrowstyle="<->"))
     # Configuración del gráfico
     ax.set_xlim(0, area_width)
     ax.set_ylim(0, area_height)
@@ -123,38 +132,58 @@ def plot_intercalated_tiles(area_width, area_height, tile_width, tile_height):
     spare_y = area_height % tile_height
 
     for j in range(tiles_y):
-        offset = (tile_width / 2) if j % 2 == 1 else 0  # Desplazar en filas pares
+        offset = (tile_width / 2) if j % 2 == 1 else 0  # Desplazamiento en filas pares
 
-        for i in range(tiles_x + 1):  # Se añade una más por el desplazamiento
+        for i in range(tiles_x + 1):  # Una baldosa extra por el desplazamiento
             x = i * tile_width - offset
             y = j * tile_height
 
             width = tile_width
             height = tile_height
 
-            # Ajustar los bordes si la baldosa se sale del área
+            # Ajustar si la baldosa sobresale del área
             if x < 0:
-                width += x  # Reducir la baldosa del borde izquierdo
+                width += x
                 x = 0
             elif x + tile_width > area_width:
-                width = area_width - x  # Reducir la baldosa del borde derecho
+                width = area_width - x
 
             if y + tile_height > area_height:
-                height = area_height - y  # Reducir la baldosa de la parte superior
+                height = area_height - y
 
-            # Asegurar valores válidos
-            width = max(width, 0)
-            height = max(height, 0)
+            # Validar que la baldosa tenga tamaño real
+            if width <= 0 or height <= 0:
+                continue
 
             color = "lightblue" if width == tile_width and height == tile_height else "red"
             rect = patches.Rectangle((x, y), width, height, linewidth=1, edgecolor='black', facecolor=color)
             ax.add_patch(rect)
 
-            # Etiquetar baldosas incompletas
-            if color == "red":
-                ax.text(x + width / 2, y + height / 2, f"{width:.2f} x {height:.2f}", 
-                        color="black", fontsize=8, ha='center', va='center', bbox=dict(facecolor='white', alpha=0.7))
+            # **Agregar etiquetas de dimensiones**
 
+            # Mostrar etiqueta solo si la baldosa es incompleta
+            if color == "red":
+                text_x, text_y = x + width / 2, y + height / 2
+                bbox_props = dict(boxstyle="round,pad=0.3", fc="white", alpha=0.8)
+
+                # Si la baldosa es muy pequeña, movemos la etiqueta afuera
+                if width < tile_width * .6 or height < tile_height * .6:
+                    arrow_x, arrow_y = text_x+width*.6, text_y + height * .6
+                    ax.annotate(f"{width} x {height}", (text_x, text_y), 
+                                xytext=(arrow_x, arrow_y), textcoords="data",
+                                arrowprops=dict(facecolor='black', arrowstyle="->"), 
+                                fontsize=8, ha='center', va='center', bbox=bbox_props)
+                else:
+                    ax.text(text_x, text_y, f"{width:.2f} x {height:.2f}", 
+                            color="black", fontsize=8, ha='center', va='center', bbox=bbox_props)
+
+    ax.annotate(f"{area_width} cm", (area_width / 2, -tile_height * 0.5), 
+                ha="center", va="center", fontsize=10, color="black",
+                arrowprops=dict(facecolor='black', arrowstyle="<->"))
+
+    ax.annotate(f"{area_height} cm", (-tile_width * 0.7, area_height / 2), 
+                ha="center", va="center", fontsize=10, color="black", rotation=90,
+                arrowprops=dict(facecolor='black', arrowstyle="<->"))
     # Configuración del gráfico
     ax.set_xlim(0, area_width)
     ax.set_ylim(0, area_height)
@@ -193,4 +222,4 @@ def calcular_baldosas_intercaladas(ancho_area, alto_area, ancho_baldosa, alto_ba
 
     return total_baldosas, desperdicio_total
 
-calc_tiles(120, 170, 25, 25)
+calc_tiles(135, 170, 30, 20)
